@@ -1,13 +1,17 @@
-# From .NET Core 3.0 you can use the command: `dotnet new gitignore` to generate a customizable .gitignore file
-
-*.swp
-*.*~
-project.lock.json
-.DS_Store
-*.pyc
+# Rider IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.idea_modules/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries/
+.idea/**/shelf/
 
 # Visual Studio Code
-.vscode
+.vscode/
 
 # User-specific files
 *.suo
@@ -30,4 +34,47 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-.vs/
+# OS generated files
+.DS_Store
+*.swp
+*.*~
+project.lock.json
+*.pyc
+
+# Rider cache and logs
+.idea/
+.idea_modules/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries/
+.idea/**/shelf/
+
+# NuGet
+*.nupkg
+*.snupkg
+project.assets.json
+*.nuspec
+*.lock.json
+.nuget/
+packages/
+
+# JetBrains Rider solution metadata
+.idea/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/dictionaries/
+
+# Logs
+logs/
+*.log
+
+# Coverage
+coverage/
+coverage.info
+
+# Test Results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml

@@ -1,31 +1,51 @@
 ﻿version: '3.8'
 
 services:
-  ecommerce:
-    image: ecommerce
-    build:
-      context: .
-      dockerfile: ECommerce/Dockerfile
-    ports:
-      - "8080:8080"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=ecommerce;Username=postgres;Password=secret
-    depends_on:
-      - db
-
-  db:
+  postgres:
     image: postgres:16
-    container_name: postgres_db
+    container_name: ecommerce-db
     restart: always
     environment:
-      POSTGRES_DB: ecommerce
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecommercedb
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  server:
+    build:
+      context: .
+      dockerfile: docker/server.Dockerfile
+    container_name: ecommerce-server
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ecommercedb;Username=postgres;Password=postgres
+    ports:
+      - "5000:80"
+    restart: always
+
+  client:
+    build:
+      context: .
+      dockerfile: docker/client.Dockerfile
+    container_name: ecommerce-client
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://server:80/api
+    restart: always
 
 volumes:
-  postgres_data:
+  postgres-data:
