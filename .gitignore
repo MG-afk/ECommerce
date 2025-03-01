@@ -78,3 +78,6 @@ TestResults/
 *.trx
 *.coverage
 *.coveragexml
+
+#
+.env
